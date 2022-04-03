@@ -22,8 +22,89 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
+         Software implementation will be used if config_hardware_auto_brightness_available is not set -->
+    <bool name="config_automatic_brightness_available">true</bool>
+
+    <!-- Flag specifying whether VoLTE is available on device -->
+    <bool name="config_device_volte_available">true</bool>
+
+    <!-- Flag specifying whether VT is available on device -->
+    <bool name="config_device_vt_available">true</bool>
+
+    <!-- Enable doze mode -->
+    <string name="config_dozeComponent">com.android.systemui/com.android.systemui.doze.DozeService</string>
+    <bool name="config_dozeAfterScreenOffByDefault">true</bool>
+
+    <!-- Whether the always on display mode is available. -->
+    <bool name="config_dozeAlwaysOnDisplayAvailable">true</bool>
+
+    <!-- Control whether the always on display mode is enabled by default. This value will be used
+         during initialization when the setting is still null. -->
+    <bool name="config_dozeAlwaysOnEnabled">false</bool>
+
+
+    <!-- Average Current for bluetooth controller when idle. 0 by default-->
+    <integer translatable="false" name="config_bluetooth_idle_cur_ma">3</integer>
+
+    <!-- Average Current for bluetooth controller when receiving. 0 by default-->
+    <integer translatable="false" name="config_bluetooth_rx_cur_ma">20</integer>
+
+    <!-- Average Current for bluetooth controller when transmitting. 0 by default-->
+    <integer translatable="false" name="config_bluetooth_tx_cur_ma">33</integer>
+
+    <!-- Operating volatage for bluetooth controller. 0 by default-->
+    <integer translatable="false" name="config_bluetooth_operating_voltage_mv">3300</integer>
+
+    <!--  Whether Multiuser UI should be shown -->
+    <bool name="config_enableMultiUserUI">true</bool>
+
+    <!-- Whether WiFi display is supported by this device.
+         There are many prerequisites for this feature to work correctly.
+         Here are a few of them:
+         * The WiFi radio must support WiFi P2P.
+         * The WiFi radio must support concurrent connections to the WiFi display and
+           to an access point.
+         * The Audio Flinger audio_policy.conf file must specify a rule for the "r_submix"
+           remote submix module.  This module is used to record and stream system
+           audio output to the WiFi display encoder in the media server.
+         * The remote submix module "audio.r_submix.default" must be installed on the device.
+         * The device must be provisioned with HDCP keys (for protected content).
+    -->
+    <bool name="config_enableWifiDisplay">true</bool>
+
+    <!-- Set to true if the wifi display supports compositing content stored
+         in gralloc protected buffers.  For this to be true, there must exist
+         a protected hardware path for surface flinger to composite and send
+         protected buffers to the wifi display video encoder.
+         If this flag is false, we advise applications not to use protected
+         buffers (if possible) when presenting content to a wifi display because
+         the content may be blanked.
+         This flag controls whether the {@link Display#FLAG_SUPPORTS_PROTECTED_BUFFERS}
+         flag is set for wifi displays.
+    -->
+    <bool name="config_wifiDisplaySupportsProtectedBuffers">true</bool>
+
+    <!-- Boolean indicating if current platform supports BLE peripheral mode -->
+    <bool name="config_bluetooth_le_peripheral_mode_supported">true</bool>
+
+    <!-- Flag indicating if the speed up audio on mt call code should be executed -->
+    <bool name="config_speed_up_audio_on_mt_calls">true</bool>
+
+    <!-- Whether the Unprocessed audio source supports the required frequency range and level -->
+    <bool name="config_supportAudioSourceUnprocessed">true</bool>
+
+    <!-- Is the device capable of hot swapping an ICC Card -->
+    <bool name="config_hotswapCapable">true</bool>
+
+    <!-- Boolean indicating whether the HWC setColorTransform function can be performed efficiently in hardware. -->
+    <bool name="config_setColorTransformAccelerated">true</bool>
+
+    <!-- True if the device supports Sustained Performance Mode-->
+    <bool name="config_sustainedPerformanceModeSupported">true</bool>
+
     <!-- Whether a software navigation bar should be shown. NOTE: in the future this may be
-        autodetected from the Configuration. -->
+         autodetected from the Configuration. -->
     <bool name="config_showNavigationBar">true</bool>
 
     <!-- Whether the display cutout region of the main built-in display should be forced to
@@ -31,83 +112,55 @@
     -->
     <bool name="config_fillMainBuiltInDisplayCutout">false</bool>
 
-    <!-- The bounding path of the cutout region of the main built-in display.
-         Must either be empty if there is no cutout region, or a string that is parsable by
-         {@link android.util.PathParser}.
-         The path is assumed to be specified in display coordinates with pixel units and in
-         the display's native orientation, with the origin of the coordinate system at the
-         center top of the display.
-         To facilitate writing device-independent emulation overlays, the marker `@dp` can be
-         appended after the path string to interpret coordinates in dp instead of px units.
-         Note that a physical cutout should be configured in pixels for the best results.
-         Example for a 10px x 10px square top-center cutout:
-                <string ...>M -5,0 L -5,10 L 5,10 L 5,0 Z</string>
-         Example for a 10dp x 10dp square top-center cutout:
-                <string ...>M -5,0 L -5,10 L 5,10 L 5,0 Z @dp</string>
-         @see https://www.w3.org/TR/SVG/paths.html#PathData
-    -->
-    <string name="config_mainBuiltInDisplayCutout">
-        M -544,0 L -544,108 L -270,108 L -270,0 Z
-    </string>
+    <!-- Indicate whether to allow the device to suspend when the screen is off
+         due to the proximity sensor.  This resource should only be set to true
+         if the sensor HAL correctly handles the proximity sensor as a wake-up source.
+         Otherwise, the device may fail to wake out of suspend reliably.
+         The default is false. -->
+    <bool name="config_suspendWhenScreenOffDueToProximity">true</bool>
 
-    <!-- The default refresh rate for a given device. Change this value to set a higher default
-         refresh rate. If the hardware composer on the device supports display modes with a higher
-         refresh rate than the default value specified here, the framework may use those higher
-         refresh rate modes if an app chooses one by setting preferredDisplayModeId or calling
-         setFrameRate().
-         If a non-zero value is set for config_defaultPeakRefreshRate, then
-         config_defaultRefreshRate may be set to 0, in which case the value set for
-         config_defaultPeakRefreshRate will act as the default frame rate. -->
-    <integer name="config_defaultRefreshRate">120</integer>
+    <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
+    <bool name="config_unplugTurnsOnScreen">true</bool>
 
-    <!-- The default peak refresh rate for a given device. Change this value if you want to allow
-         for higher refresh rates to be automatically used out of the box -->
-    <integer name="config_defaultPeakRefreshRate">120</integer>
-
-    <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
-         Software implementation will be used if config_hardware_auto_brightness_available is not set -->
-    <bool name="config_automatic_brightness_available">true</bool>
+    <!-- When true use the linux /dev/input/event subsystem to detect the switch changes
+         on the headphone/microphone jack. When false use the older uevent framework. -->
+    <bool name="config_useDevInputEventForAudioJack">true</bool>
 
     <!-- Stability requirements in milliseconds for accepting a new brightness level.  This is used
          for debouncing the light sensor.  Different constants are used to debounce the light sensor
          when adapting to brighter or darker environments.  This parameter controls how quickly
          brightness changes occur in response to an observed change in light level that exceeds the
          hysteresis threshold. -->
-    <integer name="config_autoBrightnessBrighteningLightDebounce">2000</integer>
+    <integer name="config_autoBrightnessBrighteningLightDebounce">1000</integer>
     <integer name="config_autoBrightnessDarkeningLightDebounce">4000</integer>
 
-    <!-- Light sensor event rate in milliseconds for automatic brightness control. -->
-    <integer name="config_autoBrightnessLightSensorRate">500</integer>
+    <!-- Minimum screen brightness allowed by the power manager. -->
+    <integer name="config_screenBrightnessDim">2</integer>
 
-    <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
-         The N entries of this array define N 1 zones as follows:
-         Zone 0: 0 <= LUX < array[0]
-         Zone 1: array[0] <= LUX < array[1]
-         ...
-         Zone N: array[N - 1] <= LUX < array[N]
-         Zone N + 1 array[N] <= LUX < infinity
-         Must be overridden in platform specific overlays -->
-    <integer-array name="config_autoBrightnessLevels">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>8</item>
-        <item>12</item>
-        <item>20</item>
-        <item>33</item>
-        <item>55</item>
-        <item>90</item>
-        <item>148</item>
-        <item>245</item>
-        <item>403</item>
-        <item>665</item>
-        <item>1097</item>
-        <item>1808</item>
-        <item>2981</item>
-        <item>5000</item>
-        <item>10000</item>
-    </integer-array>
+    <!-- Minimum screen brightness setting allowed by the power manager.
+         The user is forbidden from setting the brightness below this level. -->
+    <integer name="config_screenBrightnessSettingMinimum">1</integer>
+
+    <!-- The bounding path of the cutout region of the main built-in display.
+         Must either be empty if there is no cutout region, or a string that is parsable by
+         {@link android.util.PathParser}.
+    
+         The path is assumed to be specified in display coordinates with pixel units and in
+         the display's native orientation, with the origin of the coordinate system at the
+         center top of the display.
+    
+         To facilitate writing device-independent emulation overlays, the marker `@dp` can be
+         appended after the path string to interpret coordinates in dp instead of px units.
+         Note that a physical cutout should be configured in pixels for the best results.
+    -->
+    <string name="config_mainBuiltInDisplayCutout">M -544,0 L -544,108 L -270,108 L -270,0 Z</string>
+    
+    <!--  Define Google play service package for FRP-->
+    <string name="config_persistentDataPackageName">com.google.android.gms</string>
+
+    <!-- Boolean indicating if restoring network selection should be skipped -->
+    <!-- The restoring is handled by modem if it is true-->
+    <bool name="skip_restoring_network_selection">true</bool>
 
     <!-- Array of desired screen brightness in nits corresponding to the lux values
          in the config_autoBrightnessLevels array. As with config_screenBrightnessMinimumNits and
@@ -142,6 +195,36 @@
         <item>476.141854366</item> <!-- 5000 - 10000 -->
         <item>610.667755086</item> <!-- 10000+ -->
     </array>
+
+    <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
+         The N entries of this array define N  1 zones as follows:
+         Zone 0:        0 <= LUX < array[0]
+         Zone 1:        array[0] <= LUX < array[1]
+         ...
+         Zone N:        array[N - 1] <= LUX < array[N]
+         Zone N + 1     array[N] <= LUX < infinity
+         Must be overridden in platform specific overlays -->
+    <integer-array name="config_autoBrightnessLevels">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
+        <item>20</item>
+        <item>33</item>
+        <item>55</item>
+        <item>90</item>
+        <item>148</item>
+        <item>245</item>
+        <item>403</item>
+        <item>665</item>
+        <item>1097</item>
+        <item>1808</item>
+        <item>2981</item>
+        <item>5000</item>
+        <item>10000</item>
+    </integer-array>
 
     <!-- An array describing the screen's backlight values corresponding to the brightness
          values in the config_screenBrightnessNits array.
@@ -405,7 +488,7 @@
     </integer-array>
 
     <!-- An array of floats describing the screen brightness in nits corresponding to the backlight
-         values in the config_screenBrightnessBacklight array.  On OLED displays these values
+         values in the config_screenBrightnessBacklight array.  On OLED displays these  values
          should be measured with an all white image while the display is in the fully on state.
          Note that this value should *not* reflect the maximum brightness value for any high
          brightness modes but only the maximum brightness value obtainable in a sustainable manner.
@@ -668,281 +751,6 @@
         <item>450</item>
     </array>
 
-    <!-- Minimum screen brightness setting allowed by the power manager.
-         The user is forbidden from setting the brightness below this level. -->
-    <integer name="config_screenBrightnessSettingMinimum">1</integer>
-
-    <!-- Default screen brightness setting.
-         Must be in the range specified by minimum and maximum. -->
-    <integer name="config_screenBrightnessSettingDefault">98</integer>
-
-    <!-- Minimum allowable screen brightness to use in a very dark room.
-         This value sets the floor for the darkest possible auto-brightness
-         adjustment.  It is expected to be somewhat less than the first entry in
-         config_autoBrightnessLcdBacklightValues so as to allow the user to have
-         some range of adjustment to dim the screen further than usual in very
-         dark rooms. The contents of the screen must still be clearly visible
-         in darkness (although they may not be visible in a bright room). -->
-    <integer name="config_screenBrightnessDark">4</integer>
-
-    <!-- Screen brightness used to dim the screen when the user activity
-         timeout expires.  May be less than the minimum allowed brightness setting
-         that can be set by the user. -->
-    <integer name="config_screenBrightnessDim">4</integer>
-
-    <!-- Screen brightness used to dim the screen while dozing in a very low power state.
-         May be less than the minimum allowed brightness setting
-         that can be set by the user. -->
-    <integer name="config_screenBrightnessDoze">12</integer>
-
-    <!-- Amount of time it takes for the light sensor to warm up in milliseconds.
-         For this time after the screen turns on, the Power Manager
-         will not debounce light sensor readings -->
-    <integer name="config_lightSensorWarmupTime">250</integer>
-
-    <!-- Enable doze mode -->
-    <string name="config_dozeComponent">com.android.systemui/com.android.systemui.doze.DozeService</string>
-    <bool name="config_dozeAfterScreenOffByDefault">true</bool>
-
-    <!-- Whether the always on display mode is available. -->
-    <bool name="config_dozeAlwaysOnDisplayAvailable">true</bool>
-
-    <!-- Control whether the always on display mode is enabled by default. This value will be used
-         during initialization when the setting is still null. -->
-    <bool name="config_dozeAlwaysOnEnabled">false</bool>
-
-    <!-- Average Current for bluetooth controller when idle. 0 by default-->
-    <integer translatable="false" name="config_bluetooth_idle_cur_ma">3</integer>
-
-    <!-- Average Current for bluetooth controller when receiving. 0 by default-->
-    <integer translatable="false" name="config_bluetooth_rx_cur_ma">20</integer>
-
-    <!-- Average Current for bluetooth controller when transmitting. 0 by default-->
-    <integer translatable="false" name="config_bluetooth_tx_cur_ma">33</integer>
-
-    <!-- Operating volatage for bluetooth controller. 0 by default-->
-    <integer translatable="false" name="config_bluetooth_operating_voltage_mv">3300</integer>
-
-    <!-- Set to true to add links to Cell Broadcast app from Settings and MMS app. -->
-    <bool name="config_cellBroadcastAppLinks">true</bool>
-
-    <!-- This string array should be overridden by the device to present a list of network
-         attributes.  This is used by the connectivity manager to decide which networks can coexist
-         based on the hardware -->
-    <!-- An Array of "[Connection name],[ConnectivityManager.TYPE_xxxx],
-         [associated radio-type],[priority],[restoral-timer(ms)],[dependencyMet]  -->
-    <!-- the 5th element "resore-time" indicates the number of milliseconds to delay
-         before automatically restore the default connection.  Set -1 if the connection
-         does not require auto-restore. -->
-    <!-- the 6th element indicates boot-time dependency-met value. -->
-    <string-array translatable="false" name="networkAttributes">
-        <item>"wifi,1,1,1,-1,true"</item>
-        <item>"mobile,0,0,0,-1,true"</item>
-        <item>"mobile_mms,2,0,4,60000,true"</item>
-        <item>"mobile_supl,3,0,2,60000,true"</item>
-        <item>"mobile_dun,4,0,2,60000,true"</item>
-        <item>"mobile_hipri,5,0,3,60000,true"</item>
-        <item>"mobile_fota,10,0,2,60000,true"</item>
-        <item>"mobile_ims,11,0,2,60000,true"</item>
-        <item>"mobile_cbs,12,0,2,60000,true"</item>
-        <item>"bluetooth,7,7,2,-1,true"</item>
-        <item>"mobile_emergency,15,0,5,-1,true"</item>
-        <item>"ethernet,9,9,9,-1,true"</item>
-    </string-array>
-
-    <!-- This string array should be overridden by the device to present a list of radio
-         attributes.  This is used by the connectivity manager to decide which networks can coexist
-         based on the hardware -->
-    <!-- An Array of "[ConnectivityManager connectionType],
-                      [# simultaneous connection types]"  -->
-    <string-array translatable="false" name="radioAttributes">
-        <item>"1,1"</item>
-        <item>"0,1"</item>
-        <item>"7,1"</item>
-    </string-array>
-
-    <!-- Boolean indicating if current platform supports HFP inband ringing -->
-    <bool name="config_bluetooth_hfp_inband_ringing_support">true</bool>
-
-    <!-- When true use the linux /dev/input/event subsystem to detect the switch changes
-         on the headphone/microphone jack. When false use the older uevent framework -->
-    <bool name="config_useDevInputEventForAudioJack">true</bool>
-
-    <!-- Indicate whether closing the lid causes the device to go to sleep and opening
-         it causes the device to wake up -->
-    <bool name="config_lidControlsSleep">true</bool>
-
-    <!-- Whether WiFi display is supported by this device.
-         There are many prerequisites for this feature to work correctly.
-         Here are a few of them:
-         * The WiFi radio must support WiFi P2P.
-         * The WiFi radio must support concurrent connections to the WiFi display and
-           to an access point.
-         * The Audio Flinger audio_policy.conf file must specify a rule for the "r_submix"
-           remote submix module.  This module is used to record and stream system
-           audio output to the WiFi display encoder in the media server.
-         * The remote submix module "audio.r_submix.default" must be installed on the device.
-         * The device must be provisioned with HDCP keys (for protected content).
-    -->
-    <bool name="config_enableWifiDisplay">true</bool>
-
-    <!-- Set to true if the wifi display supports compositing content stored
-         in gralloc protected buffers.  For this to be true, there must exist
-         a protected hardware path for surface flinger to composite and send
-         protected buffers to the wifi display video encoder.
-         If this flag is false, we advise applications not to use protected
-         buffers (if possible) when presenting content to a wifi display because
-         the content may be blanked.
-         This flag controls whether the {@link Display#FLAG_SUPPORTS_PROTECTED_BUFFERS}
-         flag is set for wifi displays.
-    -->
-    <bool name="config_wifiDisplaySupportsProtectedBuffers">true</bool>
-
-    <!-- Boolean indicating if current platform supports BLE peripheral mode -->
-    <bool name="config_bluetooth_le_peripheral_mode_supported">true</bool>
-
-    <!-- Flag indicating if the speed up audio on mt call code should be executed -->
-    <bool name="config_speed_up_audio_on_mt_calls">true</bool>
-
-    <!-- Whether the Unprocessed audio source supports the required frequency range and level -->
-    <bool name="config_supportAudioSourceUnprocessed">true</bool>
-
-    <!-- Whether camera shutter sound is forced or not  (country specific). -->
-    <bool name="config_camera_sound_forced">false</bool>
-
-    <!-- Flag specifying whether VoLTE, VT and WFC is available on device -->
-    <bool name="config_device_volte_available">true</bool>
-    <bool name="config_device_vt_available">true</bool>
-    <bool name="config_device_wfc_ims_available">true</bool>
-
-    <!-- Flag specifying whether VoLTE & VT should be available for carrier: independent of
-         carrier provisioning. If false: hard disabled. If true: then depends on carrier
-         provisioning, availability etc -->
-    <bool name="config_carrier_volte_available">true</bool>
-
-    <!-- Flag specifying whether VT should be available for carrier: independent of
-         carrier provisioning. If false: hard disabled. If true: then depends on carrier
-         provisioning, availability etc -->
-    <bool name="config_carrier_vt_available">true</bool>
-
-    <!-- Flag specifying whether WFC over IMS should be available for carrier: independent of
-         carrier provisioning. If false: hard disabled. If true: then depends on carrier
-         provisioning, availability etc -->
-    <bool name="config_carrier_wfc_ims_available">true</bool>
-
-    <!-- IWLAN data service package name to bind to by default. If none is specified in an overlay, an
-         empty string is passed in -->
-    <string name="config_wlan_data_service_package">vendor.qti.iwlan</string>
-
-    <!-- IWLAN network service package name to bind to by default. If none is specified in an overlay, an
-         empty string is passed in -->
-    <string name="config_wlan_network_service_package">vendor.qti.iwlan</string>
-
-    <!-- Telephony qualified networks service package name to bind to by default. -->
-    <string name="config_qualified_networks_service_package">vendor.qti.iwlan</string>
-
-    <!-- Config determines whether to update phone object when voice registration
-         state changes. Voice radio tech change will always trigger an update of
-         phone object irrespective of this config -->
-    <bool name="config_switch_phone_on_voice_reg_state_change">false</bool>
-
-    <!-- If this is true, the screen will come on when you plug/unplug usb/power/whatever. -->
-    <bool name="config_unplugTurnsOnScreen">true</bool>
-
-    <!-- Boolean indicating if restoring network selection should be skipped -->
-    <!-- The restoring is handled by modem if it is true-->
-    <bool translatable="false" name="skip_restoring_network_selection">true</bool>
-
-    <!-- Is the device capable of hot swapping an ICC Card -->
-    <bool name="config_hotswapCapable">true</bool>
-
-    <!-- Configure mobile tcp buffer sizes in the form:
-         rat-name:rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max
-    -->
-    <string-array name="config_mobile_tcp_buffers">
-        <item>"5gnr:2097152,6291456,16777216,512000,2097152,8388608"</item>
-        <item>"lte:2097152,4194304,8388608,262144,524288,1048576"</item>
-        <item>"lte_ca:4096,6291456,12582912,4096,1048576,2097152"</item>
-        <item>"umts:4094,87380,1220608,4096,16384,1220608"</item>
-        <item>"hspa:4094,87380,1220608,4096,16384,1220608"</item>
-        <item>"hsupa:4094,87380,1220608,4096,16384,1220608"</item>
-        <item>"hsdpa:4094,87380,1220608,4096,16384,1220608"</item>
-        <item>"hspap:4094,87380,1220608,4096,16384,1220608"</item>
-        <item>"edge:4093,26280,35040,4096,16384,35040"</item>
-        <item>"gprs:4092,8760,11680,4096,8760,11680"</item>
-        <item>"evdo:4094,87380,524288,4096,16384,262144"</item>
-    </string-array>
-
-    <!-- Vibrator pattern for a very short but reliable vibration for soft keyboard tap -->
-    <integer-array name="config_keyboardTapVibePattern">
-        <item>35</item>
-    </integer-array>
-
-    <!-- Vibrator pattern for feedback about a long screen/key press -->
-    <integer-array name="config_longPressVibePattern">
-        <item>5</item>
-        <item>30</item>
-        <item>40</item>
-        <item>0</item>
-    </integer-array>
-
-    <!-- Vibrator pattern for feedback about touching a virtual key -->
-    <integer-array name="config_virtualKeyVibePattern">
-        <item>10</item>
-        <item>25</item>
-        <item>35</item>
-        <item>0</item>
-    </integer-array>
-
-    <!-- Enables or disables haptic effect when the text insertion/selection handle is moved
-          manually by the user. Off by default, since the expected haptic feedback may not be
-          available on some devices. -->
-    <bool name="config_enableHapticTextHandle">true</bool>
-
-    <!-- Number of physical SIM slots on the device. This includes both eSIM and pSIM slots, and
-         is not necessarily the same as the number of phones/logical modems supported by the device.
-         For example, a multi-sim device can have 2 phones/logical modems, but 3 physical slots,
-         or a single SIM device can have 1 phones/logical modems, but 2 physical slots (one eSIM
-         and one pSIM) -->
-    <integer name="config_num_physical_slots">2</integer>
-
-    <!-- List supported color modes. -->
-    <integer-array name="config_availableColorModes">
-        <item>0</item> <!-- COLOR_MODE_NATURAL -->
-        <item>1</item> <!-- COLOR_MODE_BOOSTED -->
-        <item>2</item> <!-- COLOR_MODE_SATURATED -->
-        <item>3</item> <!-- COLOR_MODE_AUTOMATIC -->
-    </integer-array>
-
-    <!-- The following two arrays specify which color space to use for display composition when a
-         certain color mode is active.
-         Composition color spaces are defined in android.view.Display.COLOR_MODE_xxx, and color
-         modes are defined in ColorDisplayManager.COLOR_MODE_xxx and
-         ColorDisplayManager.VENDOR_COLOR_MODE_xxx.
-         The color space COLOR_MODE_DEFAULT (0) lets the system select the most appropriate
-         composition color space for currently displayed content. Other values (e.g.,
-         COLOR_MODE_SRGB) override system selection; these other color spaces must be supported by
-         the device for for display composition.
-         If a color mode does not have a corresponding color space specified in this array, the
-         currently set composition color space will not be modified.-->
-    <integer-array name="config_displayCompositionColorModes">
-        <item>0</item> <!-- COLOR_MODE_NATURAL   -->
-        <item>1</item> <!-- COLOR_MODE_BOOSTED   -->
-        <item>2</item> <!-- COLOR_MODE_SATURATED -->
-        <item>3</item> <!-- COLOR_MODE_AUTOMATIC -->
-    </integer-array>
-    <integer-array name="config_displayCompositionColorSpaces">
-        <item>0</item> <!-- COLOR_MODE_DEFAULT    -->
-        <item>0</item> <!-- COLOR_MODE_DEFAULT    -->
-        <item>0</item> <!-- COLOR_MODE_DEFAULT    -->
-        <item>9</item> <!-- COLOR_MODE_DISPLAY_P3 -->
-    </integer-array>
-
-    <!-- Color mode to use when accessibility transforms are enabled. This color mode must be
-     supported by the device, but not necessarily appear in config_availableColorModes. The
-     regularly selected color mode will be used if this value is negative. -->
-    <integer name="config_accessibilityColorMode">2</integer>
-
     <!-- Default list of files pinned by the Pinner Service -->
     <string-array translatable="false" name="config_defaultPinnerServiceFiles">
         <item>"/system/bin/surfaceflinger"</item>
@@ -966,18 +774,76 @@
         <item>"/apex/com.android.media/javalib/updatable-media.jar"</item>
     </string-array>
 
-    <!-- True if home app should be pinned via Pinner Service -->
-    <bool name="config_pinnerHomeApp">true</bool>
+    <!-- Values for GPS configuration -->
+    <string-array name="config_gpsParameters">
+        <item>SUPL_HOST=supl.google.com</item>
+        <item>SUPL_PORT=7275</item>
+        <item>SUPL_VER=0x20000</item>
+        <item>SUPL_MODE=1</item>
+        <item>SUPL_ES=1</item>
+        <item>LPP_PROFILE=0</item>
+        <item>USE_EMERGENCY_PDN_FOR_EMERGENCY_SUPL=1</item>
+        <item>A_GLONASS_POS_PROTOCOL_SELECT=0</item>
+        <item>GPS_LOCK=0</item>
+    </string-array>
 
-    <!-- Boolean indicating whether the HWC setColorTransform function can be performed efficiently
-         in hardware. -->
-    <bool name="config_setColorTransformAccelerated">true</bool>
+    <!-- An Array of "[Connection name],[ConnectivityManager.TYPE_xxxx],
+         [associated radio-type],[priority],[restoral-timer(ms)],[dependencyMet]  -->
+    <!-- the 5th element "resore-time" indicates the number of milliseconds to delay
+         before automatically restore the default connection.  Set -1 if the connection
+         does not require auto-restore. -->
+    <!-- the 6th element indicates boot-time dependency-met value. -->
+    <string-array name="networkAttributes">
+        <item>"wifi,1,1,1,-1,true"</item>
+        <item>"mobile,0,0,0,-1,true"</item>
+        <item>"mobile_mms,2,0,4,60000,true"</item>
+        <item>"mobile_supl,3,0,2,60000,true"</item>
+        <item>"mobile_dun,4,0,2,60000,true"</item>
+        <item>"mobile_hipri,5,0,3,60000,true"</item>
+        <item>"mobile_fota,10,0,2,60000,true"</item>
+        <item>"mobile_ims,11,0,2,60000,true"</item>
+        <item>"mobile_cbs,12,0,2,60000,true"</item>
+        <item>"bluetooth,7,7,2,-1,true"</item>
+        <item>"mobile_emergency,15,0,5,-1,true"</item>
+        <item>"ethernet,9,9,9,-1,true"</item>
+    </string-array>
 
-    <!-- True if the device supports Sustained Performance Mode-->
-    <bool name="config_sustainedPerformanceModeSupported">true</bool>
+    <!-- This string array should be overridden by the device to present a list of radio
+         attributes.  This is used by the connectivity manager to decide which networks can coexist
+         based on the hardware -->
+    <!-- An Array of "[ConnectivityManager connectionType],
+                  [# simultaneous connection types]"  -->
+    <string-array name="radioAttributes">
+        <item>"1,1"</item>
+        <item>"0,1"</item>
+        <item>"7,1"</item>
+    </string-array>
 
-    <!-- Whether device supports double tap to wake -->
-    <bool name="config_supportDoubleTapWake">true</bool>
+    <!-- List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
+         when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
+         where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
+         and Strength as defined in Authenticators.java -->
+    <string-array name="config_biometric_sensors" translatable="false" >
+        <item>0:2:15</item> <!-- ID0:Fingerprint:Strong -->
+    </string-array>
+
+    <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
+    <bool name="config_intrusiveBatteryLed">false</bool>
+
+    <!-- Whether device has VOOC charging support -->
+    <bool name="config_hasVoocCharger">true</bool>
+
+    <!-- Path to fast charging status file to detect whether an oem fast charger is active -->
+    <string name="config_oemFastChargerStatusPath" translatable="false">/sys/class/power_supply/battery/fastcharger</string>
+
+    <!-- The list of vendor package signatures that should also be considered
+         platform signatures, specifically for use on devices with a vendor partition. -->
+    <string-array name="config_vendorPlatformSignatures">
+        <item>308203f1308202d9a003020102020900b1ef143d4efddc0b300d06092a864886f70d010105050030818e310b300906035504061302434e3112301006035504080c094775616e67446f6e673111300f06035504070c08446f6e674775616e310f300d060355040a0c067265616c6d65310f300d060355040b0c067265616c6d653114301206035504030c0b416e64726f69645465616d3120301e06092a864886f70d01090116117265616c6d65407265616c6d652e636f6d301e170d3139313132303132313435345a170d3437303430373132313435345a30818e310b300906035504061302434e3112301006035504080c094775616e67446f6e673111300f06035504070c08446f6e674775616e310f300d060355040a0c067265616c6d65310f300d060355040b0c067265616c6d653114301206035504030c0b416e64726f69645465616d3120301e06092a864886f70d01090116117265616c6d65407265616c6d652e636f6d30820122300d06092a864886f70d01010105000382010f003082010a0282010100b8cb1d3af45d89308556094d5df317f3fbebc1ac7c99ffeac22c7deb87572f50215bcad12485c715053fe84c2de7894d1279562ae761ae7652c5fd08082dee2e9a799fb53072f15e3120c32f11db8135b466c37e1162216dbe6e8798e65308d3cad9bf9b26c0cd9cdf38ed4d33b893cd79fe91cbd6a36b7f384f38f06c872c787bf2028f4d5f5776e7cd67671cd7981a1f43e5ad97490d99dd888844947ecb06920ffad910a0d383bedf9c4f669c6ac3b09ecc9125380fbc07d0b88e7e6ba91838fd2a1357f3b375df7c13b3075ccc71d4c3e0428fa4c6bb82cda67944ebccdbaddd41b26f0599a5a7c0dc8de17605719d7aee5ede77bee9ce7fdce98212e1df0203010001a350304e301d0603551d0e04160414ba90fda95b832fb8bfcc2ca271bd4eae7c8a4c62301f0603551d23041830168014ba90fda95b832fb8bfcc2ca271bd4eae7c8a4c62300c0603551d13040530030101ff300d06092a864886f70d01010505000382010100ae02838b77b874b90362e96e2931c640f47fbfe02e3c10a58b66ea3a7e3412be70191be10eb90418bcbaf5d7dfca5c21c20af111afee636c0e73372fcde592bdbf53ab272129759fd6e2d5b337ae056c6d6013c387cb307a0adc5341171bcf50bfb371a5cae04c54b6a9fa6279b3c61e7e4c4eba7969e7249b50a79b86045a771b3cc2115c914b28e5527ee598d16ec6dd8662c3c69e6c97a7bebabf01a314c4e436644217614273d59369ca61595b6df88e67f54fce77d291995ec433e863115f853dfd7f04d44a3778e40bc12ef09941f82aad08f38dbe74bfcb89306552652ef6989f8de25a0396cd4c6f8a50e9576b7655f2abec5f69873572a6bff869a0</item>
+    </string-array>
+
+    <!-- Enable Zram writeback feature to allow unused pages in zram be written to flash. -->
+    <bool name="config_zramWriteback">true</bool>
 
     <!-- The default journal mode to use use when Write-Ahead Logging is not active.
          Choices are: OFF, DELETE, TRUNCATE, PERSIST and MEMORY.
@@ -1007,39 +873,30 @@
          Choices are: FULL, NORMAL, OFF. -->
     <string name="db_wal_sync_mode">OFF</string>
 
-    <!-- Whether to cleanup fingerprints upon connection to the daemon and when user switches -->
-    <bool name="config_cleanupUnusedFingerprints">false</bool>
+    <!-- The default refresh rate. Redfin manages this using the peak refresh rate setting, so set
+         this value to 0 so it has no effect. -->
+    <integer name="config_defaultRefreshRate">120</integer>
 
-    <!-- List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
-         when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
-         where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
-         and Strength as defined in Authenticators.java -->
-    <string-array name="config_biometric_sensors" translatable="false" >
-        <item>0:2:15</item> <!-- ID0:Fingerprint:Strong -->
-    </string-array>
+    <!-- The default peak refresh rate. -->
+    <integer name="config_defaultPeakRefreshRate">120</integer>
 
-    <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
-    <bool name="config_intrusiveBatteryLed">false</bool>
+    <!-- Indicates whether device has a power button fingerprint sensor. -->
+    <bool name="config_is_powerbutton_fps" translatable="false">true</bool>
 
-    <!-- Whether device has VOOC charging support -->
-    <bool name="config_hasVoocCharger">true</bool>
+    <!-- Whether device supports double tap to wake -->
+    <bool name="config_supportDoubleTapWake">true</bool>
 
-    <!-- Path to fast charging status file to detect whether an oem fast charger is active -->
-    <string name="config_oemFastChargerStatusPath" translatable="false">/sys/class/power_supply/battery/fastcharger</string>
+    <!-- An array of arrays of side fingerprint sensor properties relative to each display.
+         Note: this value is temporary and is expected to be queried directly
+         from the HAL in the future. -->
+    <array name="config_sfps_sensor_props" translatable="false">
+        <item>@array/config_sfps_sensor_props_0</item>
+    </array>
 
-    <!-- The list of vendor package signatures that should also be considered
-         platform signatures, specifically for use on devices with a vendor partition. -->
-    <string-array name="config_vendorPlatformSignatures">
-        <item>308203f1308202d9a003020102020900b1ef143d4efddc0b300d06092a864886f70d010105050030818e310b300906035504061302434e3112301006035504080c094775616e67446f6e673111300f06035504070c08446f6e674775616e310f300d060355040a0c067265616c6d65310f300d060355040b0c067265616c6d653114301206035504030c0b416e64726f69645465616d3120301e06092a864886f70d01090116117265616c6d65407265616c6d652e636f6d301e170d3139313132303132313435345a170d3437303430373132313435345a30818e310b300906035504061302434e3112301006035504080c094775616e67446f6e673111300f06035504070c08446f6e674775616e310f300d060355040a0c067265616c6d65310f300d060355040b0c067265616c6d653114301206035504030c0b416e64726f69645465616d3120301e06092a864886f70d01090116117265616c6d65407265616c6d652e636f6d30820122300d06092a864886f70d01010105000382010f003082010a0282010100b8cb1d3af45d89308556094d5df317f3fbebc1ac7c99ffeac22c7deb87572f50215bcad12485c715053fe84c2de7894d1279562ae761ae7652c5fd08082dee2e9a799fb53072f15e3120c32f11db8135b466c37e1162216dbe6e8798e65308d3cad9bf9b26c0cd9cdf38ed4d33b893cd79fe91cbd6a36b7f384f38f06c872c787bf2028f4d5f5776e7cd67671cd7981a1f43e5ad97490d99dd888844947ecb06920ffad910a0d383bedf9c4f669c6ac3b09ecc9125380fbc07d0b88e7e6ba91838fd2a1357f3b375df7c13b3075ccc71d4c3e0428fa4c6bb82cda67944ebccdbaddd41b26f0599a5a7c0dc8de17605719d7aee5ede77bee9ce7fdce98212e1df0203010001a350304e301d0603551d0e04160414ba90fda95b832fb8bfcc2ca271bd4eae7c8a4c62301f0603551d23041830168014ba90fda95b832fb8bfcc2ca271bd4eae7c8a4c62300c0603551d13040530030101ff300d06092a864886f70d01010505000382010100ae02838b77b874b90362e96e2931c640f47fbfe02e3c10a58b66ea3a7e3412be70191be10eb90418bcbaf5d7dfca5c21c20af111afee636c0e73372fcde592bdbf53ab272129759fd6e2d5b337ae056c6d6013c387cb307a0adc5341171bcf50bfb371a5cae04c54b6a9fa6279b3c61e7e4c4eba7969e7249b50a79b86045a771b3cc2115c914b28e5527ee598d16ec6dd8662c3c69e6c97a7bebabf01a314c4e436644217614273d59369ca61595b6df88e67f54fce77d291995ec433e863115f853dfd7f04d44a3778e40bc12ef09941f82aad08f38dbe74bfcb89306552652ef6989f8de25a0396cd4c6f8a50e9576b7655f2abec5f69873572a6bff869a0</item>
-    </string-array>
-
-    <!-- Default value for proximity check on screen wake
-     NOTE ! - Enable for devices that have a fast response proximity sensor (ideally < 300ms)-->
-    <bool name="config_proximityCheckOnWake">true</bool>
-    <integer name="config_proximityCheckTimeout">3000</integer>
-    <bool name="config_proximityCheckOnWakeEnabledByDefault">false</bool>
-
-     <!-- Indicates whether device has a power button fingerprint sensor. -->
-    <bool name="config_is_powerbutton_fps">true</bool>
-
+    <array name="config_sfps_sensor_props_0" translatable="false">
+        <item>local:0</item> <!--item>displayId</item-->
+        <item>1080</item> <!--item>sensorLocationX</item-->
+        <item>1020</item> <!--item>sensorLocationY</item-->
+        <item>115</item> <!--item>sensorRadius</item-->
+    </array>
 </resources>
