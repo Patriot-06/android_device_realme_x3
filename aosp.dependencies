@@ -10,9 +10,5 @@
     {
         "repository":  "android_kernel_realme_x3",
         "target_path": "kernel/realme/x3"
-    },   
-    {
-        "repository":  "ElectroPerf/atom-x-clang",
-        "target_path": "prebuilts/clang/host/linux-x86/clang-15.0",
     }
 ]
