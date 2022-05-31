@@ -10,9 +10,5 @@
     {
         "repository":  "android_kernel_realme_x3",
         "target_path": "kernel/realme/x3"
-    },   
-    {
-        "repository": "Panchajanya1999/azure-clang",
-        "target_path": "prebuilts/clang/host/linux-x86/azure-clang",
     }
 ]
