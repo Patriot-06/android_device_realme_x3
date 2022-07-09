@@ -39,6 +39,9 @@ ro.com.google.clientidbase.ms=android-oppo
 ro.com.google.clientidbase.tx=android-oppo
 ro.com.google.clientidbase.vs=android-oppo
 
+# Graphics
+vendor.display.idle_time=32767
+
 # Media
 media.stagefright.thumbnail.prefer_hw_codecs=true
 persist.mm.enable.prefetch=true
